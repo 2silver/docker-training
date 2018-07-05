@@ -19,7 +19,7 @@ We will use *static-site* for example.
 
 First we ``clone`` the repository.
 
-To do so, please open a terminal or use [GitHub Desktop](https://desktop.github.com/)/
+To do so, please open a terminal or use [GitHub Desktop](https://desktop.github.com/).
 
 If you use the terminal do
 
