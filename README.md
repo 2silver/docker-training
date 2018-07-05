@@ -17,6 +17,18 @@ Change into the various directories and ``build`` the image.
 
 We will use *static-site* for example.
 
+First we ``clone`` the repository.
+
+To do so, please open a terminal or use [GitHub Desktop](https://desktop.github.com/)/
+
+If you use the terminal do
+
+``` console
+git clone https://github.com/wundertax/docker-training
+```
+
+If you use GitHub Desktop, please read the [user guide](https://help.github.com/desktop/guides/).
+
 Change into the directory *static-site*
 
 ``` console
