@@ -1,0 +1,18 @@
+0.0.0.0
+
+browse
+
+gzip
+
+header / {
+      Cache-Control "max-age=86400"
+    }
+
+root /srv/html
+
+log /srv/logs/access.log {
+    	rotate_size 50  # Rotate after 50 MB
+    	rotate_age  90  # Keep rotated files for 90 days
+    	rotate_keep 10  # Keep at most 10 log files
+    	rotate_compress # Compress rotated log files in gzip format
+    }

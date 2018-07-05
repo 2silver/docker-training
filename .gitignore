@@ -18,3 +18,4 @@ dist/
 var/
 .DS_Store
 site
+logs
