@@ -54,8 +54,20 @@ Now open your browser and browse to: http://0.0.0.0:2015/
 
 ## Exercises
 
-- static-site
-- share-data
+### Exercise One
+
+- Create a branch
+- Change *Hello Docker !* to *Hey Docker !!*
+- Build it locally to test
+- Send a ``Pull Request``
+
+### Exercise Two
+
+- Create a other branch
+- Change the background color (CSS)
+- Build it locally to test
+- Create a public repository on Docker Hub
+- Build the image with a new tag and push it to Docker Hub
 
 ## Contributing
 
