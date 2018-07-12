@@ -7,6 +7,7 @@ Basic training exercises for [Docker](https://docker.com).
 ## Dependencies
 
 - [Docker](https://docker.com)
+- [Docker Compose](https://docs.docker.com/compose/)
 - [GitHub](https://github.com) account
 - Git installed
 - A [Docker Hub](https://hub.docker.com) account
@@ -44,6 +45,7 @@ docker build -t my-static-webiste .
 Or with a name of your choice.
 
 ## Running The Image
+
 ```console
 docker run -p 2015:2015 my-static-webiste
 ```
@@ -68,6 +70,7 @@ Now open your browser and browse to: http://0.0.0.0:2015/
 - Build the image with a new tag and push it to Docker Hub
 
 ## Contributing
+
 Pull requests are welcome.
 
 For major changes, please open an issue first to discuss what you would like to change.
@@ -75,4 +78,5 @@ For major changes, please open an issue first to discuss what you would like to 
 Please make sure to update tests as appropriate.
 
 ## License
+
 [MIT](https://choosealicense.com/licenses/mit/)
