@@ -16,7 +16,7 @@ As each instruction is examined Docker will look for an existing image layer in 
 
 ### Check Build Order
 
-Let's take a simple example with a Python application:
+Let's take a example with a Python application:
 
 ``` docker
 FROM python:3.7.0-alpine3.8
