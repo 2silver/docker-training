@@ -31,3 +31,5 @@ copyright: 'Copyright &copy; 2018 - wundertax'
 # Page tree
 pages:
   - Home: index.md
+  - Dockerfiles: dockerfiles.md
+  - Credits: credits.md
