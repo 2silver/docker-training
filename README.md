@@ -56,6 +56,7 @@ Now open your browser and browse to: http://0.0.0.0:2015/
 
 - static-site
 - share-data
+- compose-wordpress
 
 ## Contributing
 
