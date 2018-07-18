@@ -20,21 +20,22 @@ jobs:
           paths:
             - build/site
 
-  # "deploy site":
-  #   docker:
-  #     - image: testthedocs/ttd-zipcurl
-  #   #<<: *defaults
-  #   steps:
-  #     - checkout
-  #     - attach_workspace:
-  #         at: ~/sphinx/html
-  #     - run:
-  #         command: |
-  #             ls -la
-  #             .circleci/deploy.sh
+  "deploy site":
+    docker:
+      - image: testthedocs/ttd-zipcurl
+    #<<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/build/html
+      - run:
+          command: |
+              ls -la
+              .circleci/deploy.sh
 
 workflows:
   version: 2
   btd:
     jobs:
       - "generate docs"
+       - "deploy site"
