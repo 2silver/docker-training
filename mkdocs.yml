@@ -32,4 +32,5 @@ copyright: 'Copyright &copy; 2018 - wundertax'
 pages:
   - Home: index.md
   - Dockerfiles: dockerfiles.md
+  - Contributing: contribute.md
   - Credits: credits.md
