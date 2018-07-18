@@ -38,4 +38,6 @@ workflows:
   btd:
     jobs:
       - "generate docs"
-      - "deploy site"
+      - "deploy site":
+           requires:
+             - "generate docs"
