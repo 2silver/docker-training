@@ -1,4 +1,4 @@
-[![CircleCI](https://img.shields.io/circleci/project/github/RedSparr0w/node-csgo-parser.svg)](https://github.com/wundertax/docker-training)
+[![CircleCI](https://circleci.com/gh/wundertax/docker-training.svg?style=svg)](https://circleci.com/gh/wundertax/docker-training)
 
 # Docker Training
 
