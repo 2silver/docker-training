@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -e # halt script on error
 
+echo "packing"
 zip -r website.zip ~/build/html/build/site/
+echo "done with zip"
 
 #curl -H "Content-Type: application/zip" \
 #     -H "Authorization: Bearer $NETLIFYKEY" \
