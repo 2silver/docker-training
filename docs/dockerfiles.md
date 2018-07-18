@@ -193,3 +193,24 @@ CMD ["./app"]
 ```
 
 For more info, please consult the [official docs](https://docs.docker.com/develop/develop-images/multistage-build/#name-your-build-stages).
+
+## Sort Multi-line Arguments
+
+Whenever possible, ease later changes by sorting multi-line arguments alphanumerically.
+This helps to avoid duplication of packages.
+
+This also makes PRs a lot easier to read and review.
+
+Adding a space before a backslash (`\`) helps as well.
+
+Example:
+
+``` docker
+FROM alpine:3.8
+
+RUN apk add --no-cache --virtual .build-deps \
+    gcc \
+    libc-dev \
+    python3 \
+    zlib-dev
+```
