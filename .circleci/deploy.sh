@@ -12,6 +12,11 @@ echo "done with zip"
 
 NETLIFY_SITE_NAME=https://quirky-franklin-6fe8b0.netlify.com/
 
+echo "check that we have all files"
+pwd
+ls -la
+wait 5
+
 echo " lets start with uploading"
 
 curl -H "Content-Type: application/zip" \
