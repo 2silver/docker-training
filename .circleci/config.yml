@@ -30,7 +30,6 @@ jobs:
           at: ~/build/html
       - run:
           command: |
-              ls -la
               .circleci/deploy.sh
 
 workflows:
