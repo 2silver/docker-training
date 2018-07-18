@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e # halt script on error
 
-zip -r website.zip ~/build/html/site
+zip -r website.zip ~/build/html/build/site/
 
 #curl -H "Content-Type: application/zip" \
 #     -H "Authorization: Bearer $NETLIFYKEY" \
