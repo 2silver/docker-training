@@ -12,6 +12,8 @@ echo "done with zip"
 
 NETLIFY_SITE_NAME=https://quirky-franklin-6fe8b0.netlify.com/
 
+echo " lets start with uploading"
+
 curl -H "Content-Type: application/zip" \
      -H "Authorization: Bearer $NETLIFYKEY" \
      --data-binary "@website.zip" \
