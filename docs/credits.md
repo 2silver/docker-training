@@ -1,6 +1,8 @@
 # Credits
 
-We would like to thank you and acknowledge following persons and websites.
+We would like to thank and acknowledge following persons and websites.
+
+Without them this training would not be possible ! 
 
 - [Docker Documentation](https://docs.docker.com/)
 - [Nitin Agarwal](https://medium.com/@nagarwal)
