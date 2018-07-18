@@ -122,3 +122,74 @@ RUN apk add --no-cache --virtual .build-deps \
     do-your-stuff && \
     apk del .build-deps
 ```
+
+## Use Multi-stage Builds
+
+Multi-stage builds are a feature requiring Docker 17.05 or higher on the daemon and client. 
+
+Multistage builds are useful to anyone who has struggled to optimize Dockerfiles while keeping them effortless to read and maintain.
+
+With multi-stage builds, you use multiple `FROM` statements in your Dockerfile.
+Each FROM instruction can use a different base, and each of them begins a new stage of the build.
+
+You can selectively copy artifacts from one stage to another, leaving behind everything you don’t want in the final image.
+To show how this works, Let’s adapt the Dockerfile from the previous section to use multi-stage builds.
+
+Example:
+
+``` docker
+FROM golang:1.7.3
+WORKDIR /go/src/github.com/alexellis/href-counter/
+RUN go get -d -v golang.org/x/net/html  
+COPY app.go .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
+
+FROM alpine:latest  
+RUN apk --no-cache add ca-certificates
+WORKDIR /root/
+COPY --from=0 /go/src/github.com/alexellis/href-counter/app .
+CMD ["./app"]  
+```
+
+You need one single Dockerfile.
+You don’t need a separate build script, either. `docker build .` is all what you need.
+
+``` docker
+docker build -t alexellis2/href-counter:latest .
+```
+
+The end result is the same tiny production image as before, with a significant reduction in complexity. You don’t need to create any intermediate images and you don’t need to extract any artifacts to your local system at all.
+
+How does it work?
+The second `FROM`instruction starts a new build stage with the `alpine:latest` image as its base.
+The `COPY --from=0` line copies just the built artifact from the previous stage into this new stage. 
+
+The Go SDK and any intermediate artifacts are left behind, and not saved in the final image.
+
+### Name Your Build Stages
+
+By default, the stages are not named, and you refer to them by their integer number, starting with 0 for the first `FROM` instruction.
+
+However, you can name your stages, by adding an `as <NAME>` to the `FROM` instruction.
+
+This example improves the previous one by naming the stages and using the name in the `COPY` instruction.
+
+This means that even if the instructions in your Dockerfile are re-ordered later, the `COPY` does not break.
+
+Example:
+
+``` docker
+FROM golang:1.7.3 as builder
+WORKDIR /go/src/github.com/alexellis/href-counter/
+RUN go get -d -v golang.org/x/net/html  
+COPY app.go    .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
+
+FROM alpine:latest  
+RUN apk --no-cache add ca-certificates
+WORKDIR /root/
+COPY --from=builder /go/src/github.com/alexellis/href-counter/app .
+CMD ["./app"]
+```
+
+For more info, please consult the [official docs](https://docs.docker.com/develop/develop-images/multistage-build/#name-your-build-stages).
