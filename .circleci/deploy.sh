@@ -10,12 +10,11 @@ echo "done with zip"
 #     --data-binary "@website.zip" \
 #     https://api.netlify.com/api/v1/sites/$API/deploys
 
-NETLIFY_SITE_NAME=https://quirky-franklin-6fe8b0.netlify.com/
+NETLIFY_SITE_NAME=quirky-franklin-6fe8b0.netlify.com/
 
 echo "check that we have all files"
 pwd
 ls -la
-wait 5
 
 echo " lets start with uploading"
 
