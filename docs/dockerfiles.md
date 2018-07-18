@@ -51,3 +51,74 @@ COPY . /app
 ENTRYPOINT ["python"]
 CMD ["ap.py"]
 ```
+
+## Minimize layers 
+
+Each instruction in the Dockerfile adds an extra layer to the docker image.
+The number of instructions and layers should be kept to a minimum as this ultimately affects build performance and time.
+
+In your Dockerfile, try to connect as many statements as possible with `&& \`
+
+**Not that good:**
+
+``` docker
+From alpine:3.8
+
+RUN apk --no-cache add python3
+RUN apk --no-cache add bash
+RUN apk --no-cache add tini
+RUN apk --no-cache add su-exec
+```
+
+**Better:**
+
+``` docker
+RUN apk --no-cache add \
+    python3 \
+    bash \
+    tini \
+    su-exec
+```
+
+## Avoid Unnecessary Packages
+
+To reduce complexity, dependencies, file sizes, and build times, avoid installing unnecessary packages.
+
+Remove everything you don’t need when running your container, which includes:
+
+- Package manager caches, `apt` (Debian) or `apk` (Alpine).
+- All packages needed for build-time only ( compilers, kernel-headers etc. ).
+- All packages of the default install which are not needed by your container at runtime.
+
+Following this practice, your Dockerfile could look like this:
+
+Example with Debian:
+
+``` docker
+FROM debian:9
+
+RUN apt-get update && apt-get -y upgrade && \
+    apt-get -y install $BUILD_PACKAGES && \
+    do-your-stuff && \
+    apt-get remove --purge -y $BUILD_PACKAGES && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
+```
+
+Example with Alpine:
+
+``` docker
+FROM alpine:3.8
+
+RUN apk add --no-cache --virtual .build-deps \
+    gcc \
+    libc-dev \
+    zlib-dev \
+    libjpeg-turbo-dev \
+    libpng-dev \
+    libxml2-dev \
+    libxslt-dev \
+    pcre-dev \
+    do-your-stuff && \
+    apk del .build-deps
+```
