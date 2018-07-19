@@ -254,6 +254,12 @@ Do not run your stuff as root, be humble, use the `USER` instruction to specify 
 
 This user will be used to run any subsequent `RUN`, `CMD` AND `ENDPOINT` instructions in your Dockerfile.
 
+For running `ENTRYPOINT` scripts as non-root you can use for example:
+
+- [su-exec](https://github.com/ncopa/su-exec)
+- [gosu](https://github.com/tianon/gosu)
+
+
 ### WORKDIR
 A convenient way to define the working directory, it will be used with subsequent `RUN`, `CMD`, `ENTRYPOINT`, `COPY` and `ADD` instructions.
 
@@ -370,3 +376,50 @@ Images built from `ONBUILD` should get a separate tag, for example: `ruby:1.9-on
 
 The “onbuild” image will fail if the new build’s context is missing the resource being added.
 Adding a separate tag, as recommended above, will help mitigate this by allowing the `Dockerfile` author to make a choice.
+
+### Label
+
+[Understanding object labels](https://docs.docker.com/config/labels-custom-metadata/)
+
+You can add labels to your image to help organize images by project, record licensing information, to aid in automation, or for other reasons.
+For each label, add a line beginning with `LABEL` and with one or more key-value pairs.
+ 
+The following examples show the different acceptable formats. Explanatory comments are included inline.
+
+!!! note
+    Strings with spaces must be quoted **o**r the spaces must be escaped.
+    Inner quote characters (`"`), must also be escaped.
+
+``` docker
+# Set one or more individual labels
+LABEL com.example.version="0.0.1-beta"
+LABEL vendor1="ACME Incorporated"
+LABEL vendor2=ZENITH\ Incorporated
+LABEL com.example.release-date="2015-02-12"
+LABEL com.example.version.is-production=""
+```
+
+An image can have more than one label. Prior to Docker 1.10, it was recommended to combine all labels into a single `LABEL` instruction, to prevent extra layers from being created.
+
+This is no longer necessary, but combining labels is still supported.
+
+``` docker
+# Set multiple labels on one line
+LABEL com.example.version="0.0.1-beta" com.example.release-date="2015-02-12"
+```
+
+The above can also be written as:
+
+``` docker
+# Set multiple labels at once, using line-continuation characters to break long lines
+LABEL vendor=ACME\ Incorporated \
+      com.example.is-beta= \
+      com.example.is-production="" \
+      com.example.version="0.0.1-beta" \
+      com.example.release-date="2015-02-12"
+```
+
+See [Understanding object labels](https://docs.docker.com/config/labels-custom-metadata/) for guidelines about acceptable label keys and values.
+
+For information about querying labels, refer to the items related to filtering in [Managing labels on objects](https://docs.docker.com/config/labels-custom-metadata/#managing-labels-on-objects).
+See also [`LABEL`](https://docs.docker.com/engine/reference/builder/#label) in the `Dockerfile` reference.
