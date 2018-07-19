@@ -31,6 +31,8 @@ copyright: 'Copyright &copy; 2018 - wundertax'
 # Page tree
 pages:
   - Home: index.md
-  - Dockerfiles: dockerfiles.md
+  - Dockerfiles:
+    - Best Practices: dockerfiles/best-practices.md
+      Linting: dockerfiles/linting.md
   - Contributing: contribute.md
   - Credits: credits.md
