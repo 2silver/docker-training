@@ -32,7 +32,7 @@ copyright: 'Copyright &copy; 2018 - wundertax'
 pages:
   - Home: index.md
   - Dockerfiles:
-    - Best Practices: dockerfiles/best-practices.md
-      Linting: dockerfiles/linting.md
+     - Best Practices: dockerfiles/best-practices.md
+     - Linting: dockerfiles/linting.md
   - Contributing: contribute.md
   - Credits: credits.md
