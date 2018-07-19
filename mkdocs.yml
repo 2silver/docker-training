@@ -34,5 +34,7 @@ pages:
   - Dockerfiles:
      - Best Practices: dockerfiles/best-practices.md
      - Linting: dockerfiles/linting.md
+  - Exercises:
+     - Static Website: exercises/static-site.md
   - Contributing: contribute.md
   - Credits: credits.md
