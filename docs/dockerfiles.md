@@ -231,7 +231,7 @@ If you want the command to fail due to an error at any stage in the pipe, prepen
 
 ``` docker
 RUN set -o pipefail && wget -O - https://some.site | wc -l > /number
-````
+```
 
 
 !!! note
