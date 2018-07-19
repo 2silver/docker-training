@@ -243,7 +243,6 @@ RUN set -o pipefail && wget -O - https://some.site | wc -l > /number
     For example:
 
     ``` docker
-
     RUN ["/bin/bash", "-c", "set -o pipefail && wget -O - https://some.site | wc -l > /number"]
     ```
 ## User
