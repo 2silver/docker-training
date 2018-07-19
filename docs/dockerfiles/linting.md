@@ -1,8 +1,5 @@
 # Linting
 
-
-## Linting
-
 !!! abstract
 
     Best practices for linting `Dockerfiles`.
@@ -25,7 +22,7 @@ For more, like using it with Atom, Sublime, etc, please see the [docs](https://g
 
 The [docs](https://github.com/hadolint/hadolint) are showing examples about Travis and Gitlab.
 
-### CircleCI.
+### CircleCI
 
 Adjust your `config.yml`:
 
