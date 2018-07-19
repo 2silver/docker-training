@@ -245,20 +245,20 @@ RUN set -o pipefail && wget -O - https://some.site | wc -l > /number
     ``` docker
     RUN ["/bin/bash", "-c", "set -o pipefail && wget -O - https://some.site | wc -l > /number"]
     ```
-## User
+## USER
 
 Do not run your stuff as root, be humble, use the `USER` instruction to specify the user.
 
 This user will be used to run any subsequent `RUN`, `CMD` AND `ENDPOINT` instructions in your Dockerfile.
 
-## Workdir
+## WORKDIR
 A convenient way to define the working directory, it will be used with subsequent `RUN`, `CMD`, `ENTRYPOINT`, `COPY` and `ADD` instructions.
 
 You can specify `WORKDIR` multiple times in a Dockerfile.
 
 If the directory does not exists, Docker will create it for you.
 
-## Add Or Copy
+## ADD Or COPY
 
 [Dockerfile reference for the ADD instruction](https://docs.docker.com/v17.09/engine/reference/builder/#add)
 [Dockerfile reference for the COPY instruction](https://docs.docker.com/v17.09/engine/reference/builder/#copy)
@@ -308,3 +308,61 @@ RUN mkdir -p /usr/src/things \
 ```
 
 For other items (files, directories) that do not require `ADD`’s tar auto-extraction capability, you should always use `COPY`.
+
+## CMD And ENTRYPOINT
+
+`CMD` is the instruction to specify what component is to be run by your image with arguments in the following form:
+``` docker
+CMD [“executable”, “param1”, “param2”…].
+```
+
+You can override `CMD` when you’re starting up your container by specifying your command after the image name like this:
+
+``` docker
+docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...].
+````
+
+You can only specify one `CMD` in a `Dockerfile` (OK, physically you can specify more than one, but only the last one will be used).
+
+It is good practice to specify a `CMD` even if you are developing a generic container,
+in this case an interactive shell is a good `CMD` entry.
+
+Do `CMD ["python"] or CMD [“php”, “-a”]` to give your users something to work with.
+
+What’s the deal with `ENTRYPOINT`?
+
+When you specify an entry point, your image will work a bit differently.
+
+You use `ENTRYPOINT` as the main executable of your image.
+In this case whatever you specify in `CMD` will be added to `ENTRYPOINT` as parameters.
+
+``` docker
+ENTRYPOINT ["git"]
+CMD ["--help"]
+```
+
+This way you can build Docker images that mimic the behavior of the main executable you specify in `ENTRYPOINT`.
+
+## ONBUILD
+
+[Dockerfile reference for the `ONBUILD` instruction](https://docs.docker.com/v17.09/engine/reference/builder/#onbuild)
+
+You can specify instructions with `ONBUILD` that will be executed when your image is used as the base image of another `Dockerfile`.
+
+An `ONBUILD` command executes after the current Dockerfile build completes.
+
+`ONBUILD` works in any child image derived `FROM` the current image.
+Think of the `ONBUILD` command as an instruction the parent `Dockerfile` gives to the child `Dockerfile`.
+
+A Docker build runs `ONBUILD` commands before any command in a child `Dockerfile`.
+
+`ONBUILD` is for images that are going to be built `FROM` a given image.
+
+For example, you would use `ONBUILD` for a language stack image that builds arbitrary user software written in that language within the `Dockerfile`, as you can see in [Ruby’s `ONBUILD` variants](https://github.com/docker-library/ruby/blob/master/2.4/jessie/onbuild/Dockerfile).
+
+Images built from `ONBUILD` should get a separate tag, for example: `ruby:1.9-onbuild` or `ruby:2.0-onbuild`.
+
+**Be careful** when putting `ADD` or `COPY` in `ONBUILD`.
+
+The “onbuild” image will fail if the new build’s context is missing the resource being added.
+Adding a separate tag, as recommended above, will help mitigate this by allowing the `Dockerfile` author to make a choice.
