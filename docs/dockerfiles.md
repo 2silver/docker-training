@@ -245,20 +245,23 @@ RUN set -o pipefail && wget -O - https://some.site | wc -l > /number
     ``` docker
     RUN ["/bin/bash", "-c", "set -o pipefail && wget -O - https://some.site | wc -l > /number"]
     ```
-## USER
+
+## Instructions
+
+### USER
 
 Do not run your stuff as root, be humble, use the `USER` instruction to specify the user.
 
 This user will be used to run any subsequent `RUN`, `CMD` AND `ENDPOINT` instructions in your Dockerfile.
 
-## WORKDIR
+### WORKDIR
 A convenient way to define the working directory, it will be used with subsequent `RUN`, `CMD`, `ENTRYPOINT`, `COPY` and `ADD` instructions.
 
 You can specify `WORKDIR` multiple times in a Dockerfile.
 
 If the directory does not exists, Docker will create it for you.
 
-## ADD Or COPY
+### ADD Or COPY
 
 [Dockerfile reference for the ADD instruction](https://docs.docker.com/v17.09/engine/reference/builder/#add)
 [Dockerfile reference for the COPY instruction](https://docs.docker.com/v17.09/engine/reference/builder/#copy)
@@ -309,9 +312,10 @@ RUN mkdir -p /usr/src/things \
 
 For other items (files, directories) that do not require `ADD`’s tar auto-extraction capability, you should always use `COPY`.
 
-## CMD And ENTRYPOINT
+### CMD And ENTRYPOINT
 
 `CMD` is the instruction to specify what component is to be run by your image with arguments in the following form:
+
 ``` docker
 CMD [“executable”, “param1”, “param2”…].
 ```
@@ -320,7 +324,7 @@ You can override `CMD` when you’re starting up your container by specifying yo
 
 ``` docker
 docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...].
-````
+```
 
 You can only specify one `CMD` in a `Dockerfile` (OK, physically you can specify more than one, but only the last one will be used).
 
@@ -343,7 +347,7 @@ CMD ["--help"]
 
 This way you can build Docker images that mimic the behavior of the main executable you specify in `ENTRYPOINT`.
 
-## ONBUILD
+### ONBUILD
 
 [Dockerfile reference for the `ONBUILD` instruction](https://docs.docker.com/v17.09/engine/reference/builder/#onbuild)
 
