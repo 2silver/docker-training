@@ -37,5 +37,6 @@ pages:
   - Exercises:
      - Static Website: exercises/static-site.md
      - Bind Volume: exercises/bind-volume.md
+     - Docker Compose: exercises/compose-wordpress.md
   - Contributing: contribute.md
   - Credits: credits.md
