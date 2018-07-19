@@ -36,5 +36,6 @@ pages:
      - Linting: dockerfiles/linting.md
   - Exercises:
      - Static Website: exercises/static-site.md
+     - Bind Volume: exercises/bind-volume.md
   - Contributing: contribute.md
   - Credits: credits.md
