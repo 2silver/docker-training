@@ -212,3 +212,100 @@ RUN apk add --no-cache --virtual .build-deps \
     python3 \
     zlib-dev
 ```
+
+## Use Pipes
+
+Some `RUN` commands depend on the ability to pipe the output of one command into another, using the pipe character (|), as in the following example:
+
+``` docker
+RUN wget -O - https://some.site | wc -l > /number
+```
+
+Docker runs these commands using the `/bin/sh -c` interpreter, which only evaluates the exit code of the last operation in the pipe to determine success.
+
+In the example above this build step succeeds and produces a new image so long as the `wc -l` command succeeds, even if the `wget` command fails.
+
+If you want the command to fail due to an error at any stage in the pipe, prepend `set -o pipefail &&` to ensure that an unexpected error prevents the build from inadvertently succeeding.
+
+ For example:
+
+``` docker
+RUN set -o pipefail && wget -O - https://some.site | wc -l > /number
+````
+
+
+!!! note
+
+    Not all shells support the `-o pipefail` option.
+    In such cases (such as the `dash` shell, which is the default shell on Debian-based images),
+    consider using the *exec* form of `RUN` to explicitly choose a shell that does support the `pipefail` option.
+    
+    For example:
+
+    ``` docker
+
+    RUN ["/bin/bash", "-c", "set -o pipefail && wget -O - https://some.site | wc -l > /number"]
+    ```
+## User
+
+Do not run your stuff as root, be humble, use the `USER` instruction to specify the user.
+
+This user will be used to run any subsequent `RUN`, `CMD` AND `ENDPOINT` instructions in your Dockerfile.
+
+## Workdir
+A convenient way to define the working directory, it will be used with subsequent `RUN`, `CMD`, `ENTRYPOINT`, `COPY` and `ADD` instructions.
+
+You can specify `WORKDIR` multiple times in a Dockerfile.
+
+If the directory does not exists, Docker will create it for you.
+
+## Add Or Copy
+
+[Dockerfile reference for the ADD instruction](https://docs.docker.com/v17.09/engine/reference/builder/#add)
+[Dockerfile reference for the COPY instruction](https://docs.docker.com/v17.09/engine/reference/builder/#copy)
+
+Although `ADD` and `COPY` are functionally similar, generally speaking, `COPY` is preferred.
+
+That is because it’s more transparent than `ADD`.
+
+`COPY` only supports the basic copying of local files into the container, while `ADD` has some features (like local-only tar extraction and remote URL support) that are not immediately obvious.
+
+Consequently, the best use for `ADD` is local tar file auto-extraction into the image, as in `ADD rootfs.tar.xz /`.
+
+If you have multiple `Dockerfile steps` that use different files from your context, `COPY` them individually, rather than all at once.
+
+This will ensure that each step’s build cache is only invalidated (forcing the step to be re-run) if the specifically required files change.
+
+For example:
+
+``` docker
+COPY requirements.txt /tmp/
+RUN pip install --requirement /tmp/requirements.txt
+COPY . /tmp/
+```
+
+Results in fewer cache invalidations for the `RUN` step, than if you put the `COPY . /tmp/` before it.
+
+Because image size matters, using `ADD` to fetch packages from remote URLs is **strongly discouraged**;
+you should use `curl` or `wget` instead.
+
+That way you can delete the files you no longer need after they’ve been extracted and you won’t have to add another layer in your image.
+
+For example, you should avoid doing things like:
+
+``` docker
+ADD http://example.com/big.tar.xz /usr/src/things/
+RUN tar -xJf /usr/src/things/big.tar.xz -C /usr/src/things
+RUN make -C /usr/src/things all
+```
+
+Instead, do something like:
+
+``` docker
+RUN mkdir -p /usr/src/things \
+    && curl -SL http://example.com/big.tar.xz \
+    | tar -xJC /usr/src/things \
+    && make -C /usr/src/things all
+```
+
+For other items (files, directories) that do not require `ADD`’s tar auto-extraction capability, you should always use `COPY`.
